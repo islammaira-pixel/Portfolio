@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="kk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ислам Майра Қалыбекқызы — Педагог-психолог 3D Портфолио</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Three.js for Subtle 3D Calming Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        psy: {
+                            dark: '#0f172a',
+                            navy: '#1e1b4b',
+                            indigo: '#312e81',
+                            teal: '#0d9488',
+                            lavender: '#a78bfa',
+                            gold: '#fbbf24',
+                            soft: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, #1e1b4b, #0f172a 55%, #090d16 100%);
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* 3D Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism & 3D Tilt Card Effects */
+        .glass-card {
+            background: rgba(30, 27, 75, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(167, 139, 250, 0.45);
+            box-shadow: 0 25px 50px -12px rgba(45, 212, 191, 0.18);
+        }
+
+        .tilt-3d {
+            perspective: 1000px;
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: floatSlow 4.5s ease-in-out infinite;
+        }
+        .animate-float-delay {
+            animation: floatSlow 5.5s ease-in-out 1.5s infinite;
+        }
+
+        /* Gradient Text */
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #fde68a 0%, #fbbf24 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-teal {
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 50%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4338ca;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2dd4bf;
+        }
+
+        /* Fragment Game Grid Cell */
+        .pattern-cell {
+            transition: all 0.2s ease;
+        }
+        .pattern-cell:hover {
+            transform: scale(1.08);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-500 selection:text-white">
+
+    <!-- 3D Ambient Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 px-4 py-3">
+        <nav class="max-w-7xl mx-auto glass-card rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between">
+            <a href="#home" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg group-hover:scale-105 transition">
+                    <i class="fa-solid fa-brain text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-sm sm:text-base tracking-wide text-white block leading-tight">Ислам Майра</span>
+                    <span class="text-[11px] text-teal-300 font-medium block">Педагог-психолог • Сарапшы</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center gap-1 bg-slate-900/50 p-1.5 rounded-xl border border-white/10">
+                <a href="#home" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-white bg-indigo-600/80 transition">Басты бет</a>
+                <a href="#about" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition">Мен туралы</a>
+                <a href="#achievements" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition">Жетістіктерім</a>
+                <a href="#program" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition">Авторлық бағдарлама</a>
+                <a href="#games" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-amber-300 hover:text-amber-200 hover:bg-white/10 transition">
+                    <i class="fa-solid fa-puzzle-piece mr-1"></i> Психологиялық ойындар
+                </a>
+                <a href="#contact" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition">Байланыс</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20 transition" aria-label="Мәзірді ашу">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+        </nav>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden max-w-7xl mx-auto mt-2 glass-card rounded-2xl p-4 space-y-2">
+            <a href="#home" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-600/60 text-white">Басты бет</a>
+            <a href="#about" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:bg-white/10">Мен туралы</a>
+            <a href="#achievements" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:bg-white/10">Жетістіктерім</a>
+            <a href="#program" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:bg-white/10">Авторлық бағдарлама</a>
+            <a href="#games" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-medium text-amber-300 hover:bg-white/10">Психологиялық ойындар</a>
+            <a href="#contact" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:bg-white/10">Байланыс</a>
+        </div>
+    </header>
+
+    <!-- 1. HERO SECTION (Басты бет) -->
+    <section id="home" class="relative pt-8 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <!-- Left Text Content -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/15 border border-teal-400/30 text-teal-300 text-xs sm:text-sm font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+                    «Жаңаөзен арнайы мектебі» КММ • Цифрлық 3D Портфолио
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                    <span class="block text-white">Ислам Майра</span>
+                    <span class="block text-gradient-gold mt-1">Қалыбекқызы</span>
+                </h1>
+
+                <div class="flex flex-wrap justify-center lg:justify-start gap-2.5">
+                    <span class="px-3.5 py-1.5 rounded-xl bg-indigo-600/40 border border-indigo-400/30 text-indigo-200 text-xs sm:text-sm font-semibold">
+                        <i class="fa-solid fa-heart-pulse text-teal-400 mr-1.5"></i>Педагог-психолог
+                    </span>
+                    <span class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/30 text-amber-200 text-xs sm:text-sm font-semibold">
+                        <i class="fa-solid fa-award text-amber-400 mr-1.5"></i>Педагог-сарапшы
+                    </span>
+                    <span class="px-3.5 py-1.5 rounded-xl bg-purple-500/20 border border-purple-400/30 text-purple-200 text-xs sm:text-sm font-semibold">
+                        <i class="fa-solid fa-graduation-cap text-purple-300 mr-1.5"></i>Педагогика ғылымдарының магистрі
+                    </span>
+                </div>
+
+                <!-- Core Motto / Philosophy Card -->
+                <div class="glass-card rounded-2xl p-5 border-l-4 border-l-teal-400 text-left">
+                    <p class="text-xs uppercase tracking-wider text-teal-300 font-bold mb-1">Кәсіби ұстанымым</p>
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed italic">
+                        «<span class="text-amber-300 font-semibold">Оқушы + Ата-ана + Педагогтер</span>» үштік одағы арқылы ерекше білім беруді қажет ететін балалардың жан-жақты түзете-дамыту жолында әр баланың жүрегіне жол табу.
+                    </p>
+                </div>
+
+                <!-- Quick Navigation Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <a href="#about" class="glass-card rounded-2xl p-3.5 text-center hover:-translate-y-1 transition group">
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center mb-2 group-hover:bg-indigo-500 group-hover:text-white transition">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-200">Мен туралы</span>
+                    </a>
+                    <a href="#achievements" class="glass-card rounded-2xl p-3.5 text-center hover:-translate-y-1 transition group">
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center mb-2 group-hover:bg-amber-500 group-hover:text-slate-900 transition">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-200">Жетістіктерім</span>
+                    </a>
+                    <a href="#program" class="glass-card rounded-2xl p-3.5 text-center hover:-translate-y-1 transition group">
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center mb-2 group-hover:bg-teal-500 group-hover:text-white transition">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-200">Авторлық бағдарлама</span>
+                    </a>
+                    <a href="#games" class="glass-card rounded-2xl p-3.5 text-center hover:-translate-y-1 transition group border-amber-400/40">
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center mb-2 group-hover:bg-purple-500 group-hover:text-white transition">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-amber-300">Психо-ойындар</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right 3D Interactive Avatar & Floating Badges Card -->
+            <div class="lg:col-span-5 flex justify-center tilt-3d">
+                <div id="hero-3d-card" class="glass-card rounded-3xl p-6 sm:p-8 w-full max-w-md relative border border-white/20">
+                    <!-- Decorative Glow -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-teal-500/20 via-indigo-500/20 to-amber-500/20 rounded-3xl blur-xl -z-10"></div>
+
+                    <!-- Floating Badge Top-Left -->
+                    <div class="animate-float absolute -top-4 -left-3 sm:-left-6 glass-card px-4 py-2 rounded-2xl border border-amber-400/40 flex items-center gap-2.5 shadow-xl z-20">
+                        <div class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white">6 жыл</div>
+                            <div class="text-[10px] text-slate-300">Еңбек өтілі (2020 ж.)</div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge Bottom-Right -->
+                    <div class="animate-float-delay absolute -bottom-4 -right-3 sm:-right-6 glass-card px-4 py-2 rounded-2xl border border-teal-400/40 flex items-center gap-2.5 shadow-xl z-20">
+                        <div class="w-8 h-8 rounded-lg bg-teal-400/20 text-teal-300 flex items-center justify-center">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white">Үздік диплом</div>
+                            <div class="text-[10px] text-slate-300">Бакалавр & Магистр</div>
+                        </div>
+                    </div>
+
+                    <!-- Stylized Psychologist Portrait Avatar (Custom Crisp SVG) -->
+                    <div class="relative mx-auto w-52 h-52 sm:w-60 sm:h-60 rounded-2xl overflow-hidden bg-gradient-to-b from-indigo-900/80 via-slate-800 to-teal-950 border border-white/15 flex items-center justify-center shadow-inner">
+                        <svg viewBox="0 0 240 240" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="aura" cx="50%" cy="45%" r="50%">
+                                    <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.35"/>
+                                    <stop offset="65%" stop-color="#6366f1" stop-opacity="0.15"/>
+                                    <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+                                </radialGradient>
+                                <linearGradient id="coat" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffffff"/>
+                                    <stop offset="100%" stop-color="#e2e8f0"/>
+                                </linearGradient>
+                                <linearGradient id="hair" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#4a2c18"/>
+                                    <stop offset="100%" stop-color="#27150a"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="120" cy="115" r="95" fill="url(#aura)"/>
+                            <!-- Floating Harmony Symbols -->
+                            <circle cx="45" cy="65" r="4" fill="#fbbf24" opacity="0.8"/>
+                            <circle cx="195" cy="75" r="5" fill="#2dd4bf" opacity="0.8"/>
+                            <path d="M185 45 L188 52 L195 55 L188 58 L185 65 L182 58 L175 55 L182 52 Z" fill="#fde68a" opacity="0.85"/>
+                            <!-- Back Hair -->
+                            <path d="M72 95 C68 140, 65 175, 78 205 L162 205 C175 175, 172 140, 168 95 Z" fill="url(#hair)"/>
+                            <!-- Shoulders / White Blouse -->
+                            <path d="M52 225 C56 185, 82 172, 120 172 C158 172, 184 185, 188 225 Z" fill="url(#coat)"/>
+                            <path d="M98 172 L120 198 L142 172" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                            <!-- Neck -->
+                            <rect x="108" y="142" width="24" height="34" rx="10" fill="#f3c6a5"/>
+                            <!-- Face -->
+                            <path d="M84 102 C84 74, 156 74, 156 102 C156 134, 140 152, 120 152 C100 152, 84 134, 84 102 Z" fill="#f7d1b5"/>
+                            <!-- Soft Blush -->
+                            <ellipse cx="98" cy="122" rx="7" ry="4" fill="#f472b6" opacity="0.28"/>
+                            <ellipse cx="142" cy="122" rx="7" ry="4" fill="#f472b6" opacity="0.28"/>
+                            <!-- Eyes -->
+                            <ellipse cx="104" cy="108" rx="5.5" ry="4" fill="#1e1b4b"/>
+                            <circle cx="105.5" cy="106.8" r="1.5" fill="#ffffff"/>
+                            <ellipse cx="136" cy="108" rx="5.5" ry="4" fill="#1e1b4b"/>
+                            <circle cx="137.5" cy="106.8" r="1.5" fill="#ffffff"/>
+                            <!-- Eyebrows -->
+                            <path d="M95 99 Q104 95 112 99" fill="none" stroke="#3b2212" stroke-width="2.2" stroke-linecap="round"/>
+                            <path d="M128 99 Q136 95 145 99" fill="none" stroke="#3b2212" stroke-width="2.2" stroke-linecap="round"/>
+                            <!-- Nose & Gentle Smile -->
+                            <path d="M120 110 L118 121 L122 122" fill="none" stroke="#d99b78" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M110 132 Q120 140 130 132" fill="none" stroke="#be185d" stroke-width="2.3" stroke-linecap="round"/>
+                            <!-- Front Hair / Bangs -->
+                            <path d="M82 104 C82 66, 158 66, 158 104 C154 84, 138 78, 122 86 C108 78, 88 84, 82 104 Z" fill="url(#hair)"/>
+                            <!-- Delicate Necklace -->
+                            <path d="M98 175 Q120 194 142 175" fill="none" stroke="#cbd5e1" stroke-width="1.3"/>
+                            <circle cx="120" cy="185" r="2.5" fill="#2dd4bf"/>
+                        </svg>
+                    </div>
+
+                    <div class="mt-5 text-center space-y-2">
+                        <h2 class="text-lg font-bold text-white">Ислам Майра Қалыбекқызы</h2>
+                        <p class="text-xs text-teal-300 font-medium">Ерекше білім беруді қажет ететін оқушылардың педагог-психологы</p>
+                        <div class="pt-2 flex items-center justify-center gap-4 text-xs text-slate-300 border-t border-white/10">
+                            <span><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i>Жаңаөзен қаласы</span>
+                            <span><i class="fa-solid fa-school text-teal-400 mr-1"></i>Арнайы мектеп КММ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. МЕН ТУРАЛЫ (About & Education Timeline) -->
+    <section id="about" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="text-xs font-bold uppercase tracking-widest text-teal-400">Кәсіби өмірбаян</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Мен туралы және Білім жолым</h2>
+            <p class="text-slate-300 text-sm sm:text-base mt-3">
+                1999 жылы 24 қаңтарда Маңғыстау облысы, Жаңаөзен қаласында дүниеге келдім. Бүгінде ерекше білім беруді қажет ететін балалардың танымдық, эмоционалдық және әлеуметтік дамуына бағытталған кәсіби психологиялық қолдау көрсетіп келемін.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Education & Career Timeline -->
+            <div class="lg:col-span-7 glass-card rounded-3xl p-6 sm:p-8">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+                    <i class="fa-solid fa-timeline text-amber-400"></i> Білімім мен еңбек жолым
+                </h3>
+
+                <div class="relative border-l-2 border-indigo-500/50 ml-3 space-y-7">
+                    <!-- Item 1 -->
+                    <div class="relative pl-7">
+                        <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-indigo-500/20"></span>
+                        <span class="text-xs font-bold text-indigo-300 bg-indigo-500/20 px-2.5 py-0.5 rounded-md">2005 – 2016 жж.</span>
+                        <h4 class="text-base font-bold text-white mt-1.5">Қашаған Күржіманұлы атындағы Сенек орта мектебі</h4>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">Жалпы орта білім туралы аттестат иегері.</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="relative pl-7">
+                        <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-400 ring-4 ring-amber-400/20"></span>
+                        <span class="text-xs font-bold text-amber-300 bg-amber-500/20 px-2.5 py-0.5 rounded-md">2016 – 2020 жж. • Үздік (Қызыл) диплом</span>
+                        <h4 class="text-base font-bold text-white mt-1.5">Қ. Жұбанов атындағы Ақтөбе өңірлік мемлекеттік университеті</h4>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                            «5В010300 – Педагогика және психология» мамандығы бойынша білім бакалавры (ЖБ-Б №0170201, Үздік диплом).
+                        </p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="relative pl-7">
+                        <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-purple-400 ring-4 ring-purple-400/20"></span>
+                        <span class="text-xs font-bold text-purple-300 bg-purple-500/20 px-2.5 py-0.5 rounded-md">Магистратура • Үздік диплом</span>
+                        <h4 class="text-base font-bold text-white mt-1.5">Қ. Жұбанов атындағы Ақтөбе өңірлік университеті</h4>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                            «7М01101 – Педагогика және психология» білім беру бағдарламасы бойынша <strong class="text-white">Педагогика ғылымдарының магистрі</strong> (MD №00016982570).
+                        </p>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="relative pl-7">
+                        <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-teal-400 ring-4 ring-teal-400/20"></span>
+                        <span class="text-xs font-bold text-teal-300 bg-teal-500/20 px-2.5 py-0.5 rounded-md">2020 жылдан бастап — қазіргі уақытқа дейін (6 жыл өтіл)</span>
+                        <h4 class="text-base font-bold text-white mt-1.5">«Жаңаөзен арнайы мектебі» КММ — Педагог-психолог</h4>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                            Біліктілік санаты: <strong class="text-amber-300">Педагог-сарапшы</strong>. Сараптамалық топ мүшесі, мектептің қоғамдық және әдістемелік жұмыстарының белсенді көшбасшысы.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Tripartite Union & Work Directions -->
+            <div class="lg:col-span-5 space-y-6">
+                <!-- Tripartite Union Card -->
+                <div class="glass-card rounded-3xl p-6 sm:p-7 border border-teal-400/30">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-people-arrows text-teal-400"></i> Үштік одақ моделі
+                    </h3>
+                    <div class="grid grid-cols-3 gap-2.5 text-center my-4">
+                        <div class="p-3 rounded-2xl bg-indigo-500/20 border border-indigo-400/20">
+                            <i class="fa-solid fa-child-reaching text-2xl text-amber-300 mb-1.5"></i>
+                            <div class="text-xs font-bold text-white">Оқушы</div>
+                            <div class="text-[10px] text-slate-300 mt-0.5">Түзете-дамыту</div>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-teal-500/20 border border-teal-400/20">
+                            <i class="fa-solid fa-hands-holding-child text-2xl text-teal-300 mb-1.5"></i>
+                            <div class="text-xs font-bold text-white">Ата-ана</div>
+                            <div class="text-[10px] text-slate-300 mt-0.5">Қолдау & Тренинг</div>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-purple-500/20 border border-purple-400/20">
+                            <i class="fa-solid fa-chalkboard-user text-2xl text-purple-300 mb-1.5"></i>
+                            <div class="text-xs font-bold text-white">Педагогтер</div>
+                            <div class="text-[10px] text-slate-300 mt-0.5">Әдістемелік көмек</div>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Әр баланың жеке мүмкіндіктері мен ерекшеліктерін ескере отырып, оқушы, ата-ана және мұғалім арасындағы сенімді психологиялық көпір қалыптастырамын.
+                    </p>
+                </div>
+
+                <!-- Key Directions -->
+                <div class="glass-card rounded-3xl p-6 sm:p-7 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-compass text-amber-400"></i> Негізгі жұмыс бағыттарым
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3 p-3 rounded-2xl bg-white/5">
+                            <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-puzzle-piece text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Оқушылармен түзете-дамыту сабақтары</h4>
+                                <p class="text-xs text-slate-300 mt-0.5">Зейін, есте сақтау, ойлау, ұсақ моторика және эмоционалдық-еріктік аяны дамыту.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-2xl bg-white/5">
+                            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-heart text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Ата-аналарға психологиялық қолдау</h4>
+                                <p class="text-xs text-slate-300 mt-0.5">Ресурстық тренингтер, жеке кеңес беру және отбасылық түсіністікті нығайту.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-2xl bg-white/5">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-lightbulb text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Педагогтерге әдістемелік көмек</h4>
+                                <p class="text-xs text-slate-300 mt-0.5">Шеберлік сағаттары, кәсіби күйзелістің алдын алу және арнайы оқыту әдістері.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. ЖЕТІСТІКТЕРІМ (Achievements with Filterable Tabs & Modal Preview) -->
+    <section id="achievements" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Кәсіби нәтижелер портфолиосы</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Жетістіктерім мен Марапаттарым</h2>
+            <p class="text-slate-300 text-sm sm:text-base mt-2">
+                Кез келген құжат карточкасын басу арқылы толық мәліметін көре аласыз.
+            </p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap justify-center gap-2.5 mb-10">
+            <button onclick="filterAchievements('all')" class="ach-tab active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-lg transition" data-filter="all">
+                Барлығы (12)
+            </button>
+            <button onclick="filterAchievements('teacher')" class="ach-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white/10 text-slate-200 hover:bg-white/20 transition" data-filter="teacher">
+                <i class="fa-solid fa-medal text-amber-400 mr-1.5"></i>Педагог жетістіктері (6)
+            </button>
+            <button onclick="filterAchievements('student')" class="ach-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white/10 text-slate-200 hover:bg-white/20 transition" data-filter="student">
+                <i class="fa-solid fa-star text-teal-400 mr-1.5"></i>Оқушы жетістіктері (5)
+            </button>
+            <button onclick="filterAchievements('qualification')" class="ach-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white/10 text-slate-200 hover:bg-white/20 transition" data-filter="qualification">
+                <i class="fa-solid fa-certificate text-purple-400 mr-1.5"></i>Біліктілік арттыру (1)
+            </button>
+        </div>
+
+        <!-- Achievements Grid -->
+        <div id="achievements-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Rendered dynamically via JS for clean modal inspection -->
+        </div>
+    </section>
+
+    <!-- 4. АВТОРЛЫҚ БАҒДАРЛАМА (Author's Program Showcase) -->
+    <section id="program" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 lg:p-12 relative overflow-hidden border border-teal-400/30">
+            <div class="absolute -right-24 -top-24 w-72 h-72 bg-teal-500/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-24 -bottom-24 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-xs font-bold">
+                        <i class="fa-solid fa-sparkles"></i> Облыс көлемінде таратылған авторлық бағдарлама
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                        «Тыныш әлемнің терезесі»
+                    </h2>
+
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                        Ерекше білім беруді қажет ететін оқушылардың эмоционалдық-еріктік аясын тұрақтандыруға, сенсорлық және психологиялық жайлылық қалыптастыруға, ішкі үйлесімділік пен қоршаған ортаға сенімділігін арттыруға бағытталған авторлық түзете-дамыту бағдарламасы.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10">
+                            <div class="text-teal-400 text-lg mb-1"><i class="fa-solid fa-child"></i></div>
+                            <h4 class="text-xs font-bold text-white">Оқушыларға</h4>
+                            <p class="text-[11px] text-slate-300 mt-1">Сенсорлық релаксация, зейін мен ұсақ моториканы дамыту жаттығулары.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10">
+                            <div class="text-amber-400 text-lg mb-1"><i class="fa-solid fa-users"></i></div>
+                            <h4 class="text-xs font-bold text-white">Ата-аналарға</h4>
+                            <p class="text-[11px] text-slate-300 mt-1">Үй жағдайында баланың көңіл-күйін реттеуге арналған тренингтер топтамасы.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10">
+                            <div class="text-purple-400 text-lg mb-1"><i class="fa-solid fa-chalkboard"></i></div>
+                            <h4 class="text-xs font-bold text-white">Педагогтерге</h4>
+                            <p class="text-[11px] text-slate-300 mt-1">Сабақ барысында қолданылатын 3 минуттық психологиялық сергіту әдістері.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Interactive Program Card Visual -->
+                <div class="lg:col-span-5">
+                    <div class="rounded-3xl bg-gradient-to-br from-indigo-900/90 via-slate-900 to-teal-900/90 p-6 border border-white/15 shadow-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <span class="text-xs font-bold text-teal-300 uppercase tracking-wider">Бағдарлама паспорты</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-teal-500/20 text-teal-300 text-xs font-bold">Маңғыстау облысы</span>
+                        </div>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-200">
+                            <li class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-circle-check text-teal-400"></i>
+                                <span><strong>Авторы:</strong> Ислам Майра Қалыбекқызы</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-circle-check text-teal-400"></i>
+                                <span><strong>Мақсатты топ:</strong> Ерекше білім беруді қажет ететін оқушылар</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-circle-check text-teal-400"></i>
+                                <span><strong>Әдістері:</strong> Арт-терапия, сенсорлық интеграция, визуалды зейін ойындары</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-circle-check text-teal-400"></i>
+                                <span><strong>Нәтиже:</strong> Облыстық семинар-практикумда тәжірибесі таратылды (Сертификат №04199)</span>
+                            </li>
+                        </ul>
+                        <a href="#games" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm shadow-lg transition">
+                            Бағдарламадағы әдістерді сынап көру <i class="fa-solid fa-arrow-down ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ИНТЕРАКТИВТІ ПСИХОЛОГИЯЛЫҚ ОЙЫНДАР (Interactive Games for Commission & Students) -->
+    <section id="games" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest text-teal-400">Комиссия мүшелері мен оқушыларға арналған</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Интерактивті Психологиялық Ойындар</h2>
+            <p class="text-slate-300 text-sm sm:text-base mt-2">
+                Тәжірибеде қолданатын түзете-дамыту және диагностикалық әдістемелерімнің интерактивті нұсқаларын дәл қазір ойнап көріңіз.
+            </p>
+        </div>
+
+        <!-- Game Selector Tabs -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <button onclick="switchGame(1)" id="game-btn-1" class="game-selector glass-card rounded-2xl p-4 text-left border-2 border-teal-400 bg-indigo-900/60 transition">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-bold text-teal-300">1-ОЙЫН • ВИЗУАЛДЫ ЗЕЙІН</span>
+                    <i class="fa-solid fa-eye text-teal-400"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">«Фрагментті тап»</h3>
+                <p class="text-[11px] text-slate-300 mt-1">Әдіс: Корректурлық сынама және визуалды-кеңістіктік зейінді дамыту</p>
+            </button>
+
+            <button onclick="switchGame(2)" id="game-btn-2" class="game-selector glass-card rounded-2xl p-4 text-left border border-white/10 hover:border-amber-400/50 transition">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-bold text-amber-300">2-ОЙЫН • ЭМОЦИОНАЛДЫ ИНТЕЛЛЕКТ</span>
+                    <i class="fa-solid fa-face-smile-beam text-amber-400"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">«Эмоциялар мен күйді сәйкестендір»</h3>
+                <p class="text-[11px] text-slate-300 mt-1">Әдіс: Эмоционалды интеллект және арт-терапиялық ассоциация әдісі</p>
+            </button>
+
+            <button onclick="switchGame(3)" id="game-btn-3" class="game-selector glass-card rounded-2xl p-4 text-left border border-white/10 hover:border-purple-400/50 transition">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-bold text-purple-300">3-ОЙЫН • КОГНИТИВТІ ИКЕМДІЛІК</span>
+                    <i class="fa-solid fa-bolt text-purple-400"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">«Түс пен сөз: Струп тесті»</h3>
+                <p class="text-[11px] text-slate-300 mt-1">Әдіс: Струптың зейін концентрациясы мен когнитивті бақылау әдістемесі</p>
+            </button>
+        </div>
+
+        <!-- GAME 1: FRAGMENT FINDER (Visual Attention / Корректурлық сынама) -->
+        <div id="game-panel-1" class="game-panel glass-card rounded-3xl p-6 sm:p-8 border border-teal-400/30">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-white/10">
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-lg bg-teal-500/20 text-teal-300 text-xs font-bold mb-2">
+                        Әдіс атауы: Корректурлық сынама және визуалды-кеңістіктік зейінді дамыту әдісі
+                    </span>
+                    <h3 class="text-2xl font-bold text-white">«Фрагментті тап» (2×2 үлгіні іздеу)</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                        Оң жақтағы үлкен кестеден төменде көрсетілген <strong>2×2 үлгінің (фрагменттің)</strong> дәл көшірмесін тауып, сол фрагменттің <strong>жоғарғы сол жақ бұрышындағы</strong> фигураны басыңыз!
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 self-end lg:self-center">
+                    <div class="px-4 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-center">
+                        <div class="text-[10px] text-slate-400 uppercase">Деңгей</div>
+                        <div id="g1-level" class="text-lg font-extrabold text-amber-400">1 / 3</div>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-center">
+                        <div class="text-[10px] text-slate-400 uppercase">Ұпай</div>
+                        <div id="g1-score" class="text-lg font-extrabold text-teal-400">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mt-6">
+                <!-- Target Pattern Box -->
+                <div class="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-slate-900/70 border border-amber-400/30">
+                    <span class="text-xs font-bold text-amber-300 uppercase tracking-wider mb-3">Ізделетін 2×2 үлгі:</span>
+                    <div id="g1-target-grid" class="grid grid-cols-2 gap-2.5 p-3.5 rounded-2xl bg-white shadow-xl border-4 border-purple-500">
+                        <!-- 2x2 target cells rendered by JS -->
+                    </div>
+                    <p id="g1-feedback" class="text-xs sm:text-sm text-center font-semibold text-teal-300 mt-4 min-h-[2.5rem] flex items-center justify-center">
+                        Кестеден осы 4 фигураның ретін табыңыз!
+                    </p>
+                    <button onclick="initFragmentGame(true)" class="mt-3 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Жаңа үлгі / Келесі деңгей
+                    </button>
+                </div>
+
+                <!-- Main Interactive Grid -->
+                <div class="lg:col-span-8 flex flex-col items-center">
+                    <div id="g1-board" class="grid grid-cols-6 sm:grid-cols-8 gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-2xl bg-white/95 shadow-2xl max-w-full">
+                        <!-- Board cells rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME 2: EMOTION & STATE MATCHING -->
+        <div id="game-panel-2" class="game-panel hidden glass-card rounded-3xl p-6 sm:p-8 border border-amber-400/30">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-white/10">
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-bold mb-2">
+                        Әдіс атауы: Эмоционалды интеллект және арт-терапиялық ассоциация әдісі
+                    </span>
+                    <h3 class="text-2xl font-bold text-white">«Эмоциялар мен күйді сәйкестендір»</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                        Алдымен сол жақтан <strong>эмоцияны</strong>, содан кейін оң жақтан оған сәйкес келетін <strong>психологиялық қолдау тәсілін</strong> таңдаңыз.
+                    </p>
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-center">
+                    <div class="text-[10px] text-slate-400 uppercase">Сәйкестендірілді</div>
+                    <div id="g2-progress" class="text-lg font-extrabold text-amber-400">0 / 4</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">1. Баланың немесе ересектің күйі:</h4>
+                    <div id="g2-emotions" class="space-y-2.5"></div>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">2. Тиімді психологиялық тәсіл:</h4>
+                    <div id="g2-strategies" class="space-y-2.5"></div>
+                </div>
+            </div>
+
+            <div id="g2-feedback" class="mt-6 p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center text-sm text-teal-300 font-medium">
+                Кез келген эмоцияны таңдап бастаңыз!
+            </div>
+        </div>
+
+        <!-- GAME 3: STROOP COGNITIVE FLEXIBILITY TEST -->
+        <div id="game-panel-3" class="game-panel hidden glass-card rounded-3xl p-6 sm:p-8 border border-purple-400/30">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-white/10">
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-lg bg-purple-500/20 text-purple-300 text-xs font-bold mb-2">
+                        Әдіс атауы: Струптың когнитивті икемділік пен зейін концентрациясын бағалау әдістемесі
+                    </span>
+                    <h3 class="text-2xl font-bold text-white">«Түс пен сөз: Струп тесті»</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                        Сөздің мағынасына емес, жазылған <strong>қаріптің ТҮСІНЕ</strong> назар аударып, дұрыс түс батырмасын жылдам басыңыз! (8 сұрақ)
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="px-4 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-center">
+                        <div class="text-[10px] text-slate-400 uppercase">Сұрақ</div>
+                        <div id="g3-step" class="text-lg font-extrabold text-purple-400">1 / 8</div>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-center">
+                        <div class="text-[10px] text-slate-400 uppercase">Дұрыс</div>
+                        <div id="g3-score" class="text-lg font-extrabold text-teal-400">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="g3-arena" class="max-w-xl mx-auto mt-8 text-center space-y-6">
+                <div class="p-8 rounded-3xl bg-white shadow-2xl">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-2">Сөз қандай түспен жазылған?</p>
+                    <div id="g3-word" class="text-4xl sm:text-5xl font-black tracking-wider select-none">КӨК</div>
+                </div>
+
+                <div id="g3-buttons" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="answerStroop('red')" class="py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-lg transition">ҚЫЗЫЛ</button>
+                    <button onclick="answerStroop('blue')" class="py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg transition">КӨК</button>
+                    <button onclick="answerStroop('green')" class="py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg transition">ЖАСЫЛ</button>
+                    <button onclick="answerStroop('amber')" class="py-3.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-lg transition">САРЫ</button>
+                </div>
+
+                <div id="g3-result" class="hidden p-5 rounded-2xl bg-slate-900/80 border border-teal-400/40 space-y-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. БАЙЛАНЫС (Contact & Footer) -->
+    <footer id="contact" class="pt-12 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="glass-card rounded-3xl p-8 sm:p-10 text-center space-y-6 border border-white/15">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-teal-400 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Кәсіби байланыс және ынтымақтастық</h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
+                Маңғыстау облысының білім басқармасының «Жаңаөзен арнайы мектебі» КММ-нің педагог-психологы <strong class="text-white">Ислам Майра Қалыбекқызы</strong>.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-xs sm:text-sm">
+                <div class="px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200">
+                    <i class="fa-solid fa-location-dot text-teal-400 mr-2"></i>ҚР, Маңғыстау облысы, Жаңаөзен қаласы
+                </div>
+                <div class="px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200">
+                    <i class="fa-solid fa-award text-amber-400 mr-2"></i>Санаты: Педагог-сарапшы • Магистр
+                </div>
+            </div>
+            <div class="pt-6 border-t border-white/10 text-xs text-slate-400">
+                © 2025–2026 Ислам Майра Қалыбекқызы • Педагог-психологтың интерактивті 3D веб-портфолиосы
+            </div>
+        </div>
+    </footer>
+
+    <!-- ACHIEVEMENT DETAIL MODAL -->
+    <div id="ach-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl max-w-lg w-full p-6 sm:p-8 relative border border-white/20 animate-float">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/10 hover:bg-rose-500 text-white flex items-center justify-center transition" aria-label="Жабу">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-badge" class="inline-block px-3 py-1 rounded-lg text-xs font-bold mb-3"></div>
+            <h3 id="modal-title" class="text-xl font-extrabold text-white leading-snug"></h3>
+            <p id="modal-org" class="text-xs text-teal-300 font-semibold mt-1"></p>
+            <div class="mt-4 p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-sm text-slate-200 leading-relaxed" id="modal-desc"></div>
+            <div class="mt-5 flex items-center justify-between text-xs text-slate-400">
+                <span id="modal-year"></span>
+                <span id="modal-reg" class="font-mono text-amber-300"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           1. THREE.JS CALMING 3D FLOATING PARTICLES BACKGROUND
+           ========================================================================== */
+        function initThreeBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create soft glowing geometric spheres/icosahedrons
+            const group = new THREE.Group();
+            const colors = [0x2dd4bf, 0x818cf8, 0xfbbf24, 0xc084fc];
+            const geometries = [
+                new THREE.IcosahedronGeometry(0.9, 1),
+                new THREE.OctahedronGeometry(0.8, 0),
+                new THREE.SphereGeometry(0.6, 16, 16)
+            ];
+
+            for (let i = 0; i < 28; i++) {
+                const mat = new THREE.MeshBasicMaterial({
+                    color: colors[i % colors.length],
+                    wireframe: i % 2 === 0,
+                    transparent: true,
+                    opacity: 0.22
+                });
+                const mesh = new THREE.Mesh(geometries[i % geometries.length], mat);
+                mesh.position.set(
+                    (Math.random() - 0.5) * 65,
+                    (Math.random() - 0.5) * 45,
+                    (Math.random() - 0.5) * 25
+                );
+                mesh.userData = {
+                    rotSpeedX: (Math.random() - 0.5) * 0.008,
+                    rotSpeedY: (Math.random() - 0.5) * 0.008,
+                    floatOffset: Math.random() * Math.PI * 2
+                };
+                group.add(mesh);
+            }
+            scene.add(group);
+
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = Date.now() * 0.001;
+                group.children.forEach((mesh) => {
+                    mesh.rotation.x += mesh.userData.rotSpeedX;
+                    mesh.rotation.y += mesh.userData.rotSpeedY;
+                    mesh.position.y += Math.sin(time + mesh.userData.floatOffset) * 0.006;
+                });
+                group.rotation.y += (mouseX * 0.12 - group.rotation.y) * 0.04;
+                group.rotation.x += (-mouseY * 0.12 - group.rotation.x) * 0.04;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        /* ==========================================================================
+           2. 3D TILT EFFECT FOR HERO CARD
+           ========================================================================== */
+        const heroCard = document.getElementById('hero-3d-card');
+        if (heroCard) {
+            heroCard.addEventListener('mousemove', (e) => {
+                const rect = heroCard.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+                heroCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            heroCard.addEventListener('mouseleave', () => {
+                heroCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        }
+
+        /* Mobile Menu Toggle */
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        /* ==========================================================================
+           3. ACHIEVEMENTS DATA & FILTERABLE RENDERING
+           ========================================================================== */
+        const achievementsData = [
+            {
+                id: 1,
+                category: 'teacher',
+                badge: 'Облыстық байқау • ІІІ орын',
+                badgeColor: 'bg-amber-500/20 text-amber-300',
+                icon: 'fa-trophy text-amber-400',
+                title: 'Облыстық «Арнайы мектептің үздік педагогы» байқауы',
+                org: 'Маңғыстау облысының білім басқармасы',
+                year: 'Облыстық деңгей',
+                reg: 'Диплом • ІІІ орын',
+                desc: 'Арнайы мектеп педагогтері арасындағы облыстық кәсіби шеберлік байқауында үздік нәтиже көрсетіп, ІІІ жүлделі орынды иеленді.'
+            },
+            {
+                id: 2,
+                category: 'qualification',
+                badge: 'Халықаралық біліктілік',
+                badgeColor: 'bg-purple-500/20 text-purple-300',
+                icon: 'fa-brain text-purple-400',
+                title: '«Диагностика структуры интеллекта. Тест Д. Векслера: детский вариант»',
+                org: 'Санкт-Петербург «ИМАТОН» практикалық психология институты',
+                year: '20 желтоқсан 2024 ж.',
+                reg: 'Куәлік №17323/1522552/2024',
+                desc: 'Мектеп жасындағы және мүмкіндігі шектеулі балалардың интеллект құрылымын Д. Векслер тесті (балалар нұсқасы) арқылы кешенді психологиялық-педагогикалық диагностикалау бағдарламасын меңгерді.'
+            },
+            {
+                id: 3,
+                category: 'teacher',
+                badge: 'Шеберлік сағаты • Сертификат',
+                badgeColor: 'bg-teal-500/20 text-teal-300',
+                icon: 'fa-chalkboard-user text-teal-400',
+                title: '«Арнайы мектептегі білім беру процесінде заманауи тәсілдерді қолдану»',
+                org: 'Маңғыстау облысының білім берудің оқу-әдістемелік орталығы',
+                year: '2025 ж., Ақтау қаласы',
+                reg: 'Сертификат №04199',
+                desc: 'Облыстық семинар-практикумда шеберлік сағатын өткізіп, өзінің озық іс-тәжірибесімен облыс педагогтерімен бөліскені үшін берілді.'
+            },
+            {
+                id: 4,
+                category: 'teacher',
+                badge: 'Облыстық Алғыс хат',
+                badgeColor: 'bg-indigo-500/20 text-indigo-300',
+                icon: 'fa-award text-indigo-400',
+                title: 'Маңғыстау облыстық оқу-әдістемелік орталығының Алғысы',
+                org: 'Маңғыстау облысының білім басқармасы',
+                year: '2024 ж., Ақтау қаласы',
+                reg: 'Тіркеу №03979',
+                desc: 'Өскелең ұрпаққа білім мен тәрбие берудегі және арнайы білім беру саласын дамытудағы елеулі үлесі үшін табысталды.'
+            },
+            {
+                id: 5,
+                category: 'teacher',
+                badge: 'Құрмет грамотасы',
+                badgeColor: 'bg-amber-500/20 text-amber-300',
+                icon: 'fa-scroll text-amber-400',
+                title: 'Қазақстандық салалық білім және ғылым қызметкерлері кәсіподағының Құрмет грамотасы',
+                org: 'Маңғыстау облыстық кәсіподақ ұйымы',
+                year: '2022 ж., Ақтау қаласы',
+                reg: 'Құрмет грамотасы',
+                desc: 'Білім жүйесіндегі қажырлы еңбегі, өнегелі тәрбие берудегі шығармашылық жетістіктері мен қоғамдық белсенділігі үшін марапатталды.'
+            },
+            {
+                id: 6,
+                category: 'teacher',
+                badge: 'Мектепішілік марапаттар',
+                badgeColor: 'bg-rose-500/20 text-rose-300',
+                icon: 'fa-heart text-rose-400',
+                title: 'Мектеп директорының Алғыс хаты және «Ең керемет жұп» номинациясы',
+                org: '«Жаңаөзен арнайы мектебі» КММ',
+                year: '2021–2024 жж.',
+                reg: 'Алғыс хат & Сертификат',
+                desc: 'Ұстаздар күніне орай мектеп директоры А.Е. Жалмуханованың Алғыс хаты және «Егіз лебіз» шығармашылық байқауының «Ең керемет жұп» номинациясы.'
+            },
+            {
+                id: 7,
+                category: 'student',
+                badge: 'Оқушы жетістігі • І орын',
+                badgeColor: 'bg-amber-500/20 text-amber-300',
+                icon: 'fa-medal text-amber-400',
+                title: 'Беркалиев Алтынбек — «Бояулар құпиясы – жануарлар әлемі»',
+                org: 'Республикалық «SUNQAR» білім орталығы (ҚР Оқу-ағарту мин. №514 бұйрығы)',
+                year: '2025 ж., Астана қаласы',
+                reg: 'Диплом І орын • №733',
+                desc: 'Жетекшісі: Ислам Майра Қалыбекқызы. Республикалық деңгейдегі шығармашылық байқауда І орын иеленді.'
+            },
+            {
+                id: 8,
+                category: 'student',
+                badge: 'Оқушы жетістігі • Диплом',
+                badgeColor: 'bg-teal-500/20 text-teal-300',
+                icon: 'fa-star text-teal-400',
+                title: 'Сапарбай Бауыржан — Облыстық «Шексіз шығармашылық» байқауы',
+                org: 'Маңғыстау облыстық білім берудің оқу-әдістемелік орталығы',
+                year: '2025 ж., Ақтау қаласы',
+                reg: 'Диплом №04501',
+                desc: '«Қазақстан – менің алтын бесігім» номинациясы бойынша марапатталды. Жетекшісі: Ислам Майра.'
+            },
+            {
+                id: 9,
+                category: 'student',
+                badge: 'Оқушы жетістігі • Диплом',
+                badgeColor: 'bg-teal-500/20 text-teal-300',
+                icon: 'fa-star text-teal-400',
+                title: 'Беркалиев Алтынбек — Облыстық «Шексіз шығармашылық» байқауы',
+                org: 'Маңғыстау облыстық білім берудің оқу-әдістемелік орталығы',
+                year: '2025 ж., Ақтау қаласы',
+                reg: 'Диплом №04500',
+                desc: '«Қазақстан – менің алтын бесігім» номинациясы бойынша марапатталды. Жетекшісі: Ислам Майра.'
+            },
+            {
+                id: 10,
+                category: 'student',
+                badge: 'Оқушы жетістігі • Диплом',
+                badgeColor: 'bg-teal-500/20 text-teal-300',
+                icon: 'fa-star text-teal-400',
+                title: 'Артыков Бекзат Бактыбекұлы — Облыстық «Шексіз шығармашылық» байқауы',
+                org: 'Маңғыстау облыстық білім берудің оқу-әдістемелік орталығы',
+                year: '2025 ж., Ақтау қаласы',
+                reg: 'Диплом №04505',
+                desc: '«Қазақстан – менің алтын бесігім» номинациясы бойынша марапатталды. Жетекшісі: Ислам Майра.'
+            },
+            {
+                id: 11,
+                category: 'student',
+                badge: 'Оқушы жетістігі • Диплом',
+                badgeColor: 'bg-teal-500/20 text-teal-300',
+                icon: 'fa-star text-teal-400',
+                title: 'Ардур Айқын Төлепбергенұлы — Облыстық «Шексіз шығармашылық» байқауы',
+                org: 'Маңғыстау облыстық білім берудің оқу-әдістемелік орталығы',
+                year: '2025 ж., Ақтау қаласы',
+                reg: 'Диплом №04503',
+                desc: '«Қазақстан – менің алтын бесігім» номинациясы бойынша марапатталды. Жетекшісі: Ислам Майра.'
+            },
+            {
+                id: 12,
+                category: 'teacher',
+                badge: 'Академиялық жетістік',
+                badgeColor: 'bg-indigo-500/20 text-indigo-300',
+                icon: 'fa-graduation-cap text-indigo-400',
+                title: 'Бакалавр және Магистрлік үздік дипломдар (Қ. Жұбанов университеті)',
+                org: 'Қ. Жұбанов атындағы Ақтөбе өңірлік университеті',
+                year: '2020 ж. / 2022–2024 жж.',
+                reg: 'ЖБ-Б №0170201 • MD №00016982570',
+                desc: '«Педагогика және психология» мамандығы бойынша бакалавриатты қызыл дипломмен, ал магистратураны Педагогика ғылымдарының магистрі дәрежесімен үздік аяқтады.'
+            }
+        ];
+
+        function renderAchievements(filter = 'all') {
+            const grid = document.getElementById('achievements-grid');
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? achievementsData : achievementsData.filter(item => item.category === filter);
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-3xl p-6 flex flex-col justify-between cursor-pointer hover:-translate-y-1.5 transition group';
+                card.onclick = () => openModal(item);
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-lg text-[11px] font-bold ${item.badgeColor}">${item.badge}</span>
+                            <div class="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-base font-bold text-white leading-snug group-hover:text-teal-300 transition">${item.title}</h3>
+                        <p class="text-xs text-slate-300 mt-2">${item.org}</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>${item.year}</span>
+                        <span class="text-teal-300 font-semibold group-hover:translate-x-1 transition">Толығырақ <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterAchievements(filter) {
+            document.querySelectorAll('.ach-tab').forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.className = 'ach-tab active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-lg transition';
+                } else {
+                    btn.className = 'ach-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white/10 text-slate-200 hover:bg-white/20 transition';
+                }
+            });
+            renderAchievements(filter);
+        }
+
+        function openModal(item) {
+            document.getElementById('modal-badge').className = `inline-block px-3 py-1 rounded-lg text-xs font-bold mb-3 ${item.badgeColor}`;
+            document.getElementById('modal-badge').textContent = item.badge;
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-org').textContent = item.org;
+            document.getElementById('modal-desc').textContent = item.desc;
+            document.getElementById('modal-year').textContent = item.year;
+            document.getElementById('modal-reg').textContent = item.reg;
+            document.getElementById('ach-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('ach-modal').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           4. GAME SWITCHER
+           ========================================================================== */
+        function switchGame(num) {
+            for (let i = 1; i <= 3; i++) {
+                const panel = document.getElementById(`game-panel-${i}`);
+                const btn = document.getElementById(`game-btn-${i}`);
+                if (i === num) {
+                    panel.classList.remove('hidden');
+                    btn.classList.add('border-2', 'border-teal-400', 'bg-indigo-900/60');
+                } else {
+                    panel.classList.add('hidden');
+                    btn.classList.remove('border-2', 'border-teal-400', 'bg-indigo-900/60');
+                }
+            }
+        }
+
+        /* ==========================================================================
+           5. GAME 1: VISUAL ATTENTION FRAGMENT FINDER (Inspired by user's worksheets)
+           ========================================================================== */
+        const symbolsSVG = [
+            // 0: Red Heart
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><path d="M18 31 C18 31 5 22 5 12.5 C5 8.5 8 5.5 11.8 5.5 C14.3 5.5 16.6 6.8 18 8.9 C19.4 6.8 21.7 5.5 24.2 5.5 C28 5.5 31 8.5 31 12.5 C31 22 18 31 18 31 Z" fill="#ef4444"/></svg>`,
+            // 1: Blue Trapezoid / Block
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><polygon points="10,6 26,6 30,30 6,30" fill="#2563eb" rx="3"/></svg>`,
+            // 2: Green Plus
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><path d="M14 6 H22 V14 H30 V22 H22 V30 H14 V22 H6 V14 H14 Z" fill="#16a34a"/></svg>`,
+            // 3: Yellow Triangle
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><polygon points="6,7 30,7 18,30" fill="#eab308"/></svg>`,
+            // 4: Light Blue Star
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><polygon points="18,4 22,13 32,14 24.5,21 26.5,31 18,26 9.5,31 11.5,21 4,14 14,13" fill="#38bdf8"/></svg>`,
+            // 5: Dark Green Ring
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><circle cx="18" cy="18" r="11" fill="none" stroke="#15803d" stroke-width="5.5"/></svg>`,
+            // 6: Striped Circle (Sophie & Plato style)
+            `<svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8"><circle cx="18" cy="18" r="12" fill="#fef3c7" stroke="#b45309" stroke-width="2.5"/><line x1="7" y1="14" x2="29" y2="14" stroke="#b45309" stroke-width="2.5"/><line x1="7" y1="22" x2="29" y2="22" stroke="#b45309" stroke-width="2.5"/></svg>`
+        ];
+
+        let g1Level = 1;
+        let g1Score = 0;
+        let g1AnswerRow = 0;
+        let g1AnswerCol = 0;
+        const rows = 6;
+        const cols = 8;
+
+        function initFragmentGame(advanceLevel = false) {
+            if (advanceLevel) {
+                g1Level = g1Level >= 3 ? 1 : g1Level + 1;
+            }
+            document.getElementById('g1-level').textContent = `${g1Level} / 3`;
+            const feedback = document.getElementById('g1-feedback');
+            feedback.className = 'text-xs sm:text-sm text-center font-semibold text-teal-300 mt-4 min-h-[2.5rem] flex items-center justify-center';
+            feedback.textContent = 'Кестеден осы 2×2 үлгінің жоғарғы сол жақ бұрышын басыңыз!';
+
+            // Generate 2x2 target pattern
+            const target = [
+                [Math.floor(Math.random() * symbolsSVG.length), Math.floor(Math.random() * symbolsSVG.length)],
+                [Math.floor(Math.random() * symbolsSVG.length), Math.floor(Math.random() * symbolsSVG.length)]
+            ];
+
+            // Render Target Grid
+            const targetEl = document.getElementById('g1-target-grid');
+            targetEl.innerHTML = '';
+            target.flat().forEach(symIdx => {
+                const cell = document.createElement('div');
+                cell.className = 'w-11 h-11 flex items-center justify-center rounded-lg bg-slate-100';
+                cell.innerHTML = symbolsSVG[symIdx];
+                targetEl.appendChild(cell);
+            });
+
+            // Build 6x8 Board avoiding accidental duplicates of the 2x2 target
+            let board = Array.from({ length: rows }, () =>
+                Array.from({ length: cols }, () => Math.floor(Math.random() * symbolsSVG.length))
+            );
+
+            // Pick a random top-left position for the true answer
+            g1AnswerRow = Math.floor(Math.random() * (rows - 1));
+            g1AnswerCol = Math.floor(Math.random() * (cols - 1));
+
+            // Ensure no accidental early matches
+            for (let r = 0; r < rows - 1; r++) {
+                for (let c = 0; c < cols - 1; c++) {
+                    if (r === g1AnswerRow && c === g1AnswerCol) continue;
+                    if (
+                        board[r][c] === target[0][0] &&
+                        board[r][c + 1] === target[0][1] &&
+                        board[r + 1][c] === target[1][0] &&
+                        board[r + 1][c + 1] === target[1][1]
+                    ) {
+                        board[r][c] = (target[0][0] + 1) % symbolsSVG.length;
+                    }
+                }
+            }
+
+            // Place the exact 2x2 target at (g1AnswerRow, g1AnswerCol)
+            board[g1AnswerRow][g1AnswerCol] = target[0][0];
+            board[g1AnswerRow][g1AnswerCol + 1] = target[0][1];
+            board[g1AnswerRow + 1][g1AnswerCol] = target[1][0];
+            board[g1AnswerRow + 1][g1AnswerCol + 1] = target[1][1];
+
+            // Render Board
+            const boardEl = document.getElementById('g1-board');
+            boardEl.innerHTML = '';
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.dataset.r = r;
+                    btn.dataset.c = c;
+                    btn.className = 'pattern-cell w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-100 hover:bg-indigo-100 border border-slate-200 flex items-center justify-center cursor-pointer';
+                    btn.innerHTML = symbolsSVG[board[r][c]];
+                    btn.onclick = () => checkFragmentClick(r, c);
+                    boardEl.appendChild(btn);
+                }
+            }
+        }
+
+        function checkFragmentClick(r, c) {
+            const feedback = document.getElementById('g1-feedback');
+            if (r === g1AnswerRow && c === g1AnswerCol) {
+                g1Score += 10;
+                document.getElementById('g1-score').textContent = g1Score;
+                feedback.className = 'text-xs sm:text-sm text-center font-bold text-emerald-400 mt-4 min-h-[2.5rem] flex items-center justify-center';
+                feedback.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i> Тамаша! Визуалды зейініңіз өте жоғары! (+10 ұпай)';
+
+                // Highlight all 4 cells of the found 2x2 fragment
+                const coords = [
+                    [r, c], [r, c + 1],
+                    [r + 1, c], [r + 1, c + 1]
+                ];
+                coords.forEach(([rr, cc]) => {
+                    const cell = document.querySelector(`#g1-board button[data-r="${rr}"][data-c="${cc}"]`);
+                    if (cell) {
+                        cell.classList.remove('bg-slate-100');
+                        cell.classList.add('bg-emerald-200', 'ring-2', 'ring-emerald-600');
+                    }
+                });
+            } else {
+                feedback.className = 'text-xs sm:text-sm text-center font-semibold text-amber-300 mt-4 min-h-[2.5rem] flex items-center justify-center';
+                feedback.innerHTML = '<i class="fa-solid fa-magnifying-glass mr-1.5"></i> Дәл емес. 2×2 үлгінің жоғарғы сол жақ бұрышына мұқият қараңыз!';
+            }
+        }
+
+        /* ==========================================================================
+           6. GAME 2: EMOTION & STATE MATCHING
+           ========================================================================== */
+        const emotionPairs = [
+            {
+                id: 'anxiety',
+                emotion: '😟 Мазасыздық пен қорқыныш',
+                strategy: '🌬️ «Терең тыныс алу және сенсорлық құм/су терапиясы»'
+            },
+            {
+                id: 'anger',
+                emotion: '😠 Ашу мен эмоционалдық кернеу',
+                strategy: '🎨 «Арт-терапия: эмоцияны қағаз бетіне бояумен шығару»'
+            },
+            {
+                id: 'fatigue',
+                emotion: '😴 Зейіннің шашырауы мен шаршау',
+                strategy: '🧩 «Кинезиологиялық саусақ жаттығулары мен корректурлық ойын»'
+            },
+            {
+                id: 'shyness',
+                emotion: '🥺 Тұйықтық пен өзіне сенімсіздік',
+                strategy: '🤝 «Жұптық ойындар және жетістік жағдаятын туғызу»'
+            }
+        ];
+
+        let selectedEmotion = null;
+        let matchedCount = 0;
+
+        function initEmotionGame() {
+            selectedEmotion = null;
+            matchedCount = 0;
+            document.getElementById('g2-progress').textContent = '0 / 4';
+            const emoContainer = document.getElementById('g2-emotions');
+            const strContainer = document.getElementById('g2-strategies');
+            emoContainer.innerHTML = '';
+            strContainer.innerHTML = '';
+
+            const shuffledStrategies = [...emotionPairs].sort(() => Math.random() - 0.5);
+
+            emotionPairs.forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `emo-${item.id}`;
+                btn.className = 'w-full p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-left text-sm font-semibold text-white transition';
+                btn.textContent = item.emotion;
+                btn.onclick = () => selectEmotionItem(item.id);
+                emoContainer.appendChild(btn);
+            });
+
+            shuffledStrategies.forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `str-${item.id}`;
+                btn.className = 'w-full p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-left text-sm font-semibold text-slate-200 transition';
+                btn.textContent = item.strategy;
+                btn.onclick = () => selectStrategyItem(item.id);
+                strContainer.appendChild(btn);
+            });
+        }
+
+        function selectEmotionItem(id) {
+            const btn = document.getElementById(`emo-${id}`);
+            if (btn.disabled) return;
+            document.querySelectorAll('#g2-emotions button').forEach(b => b.classList.remove('ring-2', 'ring-amber-400', 'bg-amber-500/20'));
+            btn.classList.add('ring-2', 'ring-amber-400', 'bg-amber-500/20');
+            selectedEmotion = id;
+            document.getElementById('g2-feedback').textContent = 'Енді оң жақтан сәйкес психологиялық тәсілді таңдаңыз!';
+        }
+
+        function selectStrategyItem(id) {
+            const strBtn = document.getElementById(`str-${id}`);
+            if (strBtn.disabled) return;
+            if (!selectedEmotion) {
+                document.getElementById('g2-feedback').textContent = 'Алдымен сол жақтан эмоцияны таңдаңыз!';
+                return;
+            }
+            const emoBtn = document.getElementById(`emo-${selectedEmotion}`);
+            if (selectedEmotion === id) {
+                emoBtn.disabled = true;
+                strBtn.disabled = true;
+                emoBtn.className = 'w-full p-4 rounded-2xl bg-emerald-500/25 border border-emerald-400 text-left text-sm font-bold text-emerald-200';
+                strBtn.className = 'w-full p-4 rounded-2xl bg-emerald-500/25 border border-emerald-400 text-left text-sm font-bold text-emerald-200';
+                matchedCount++;
+                document.getElementById('g2-progress').textContent = `${matchedCount} / 4`;
+                selectedEmotion = null;
+
+                if (matchedCount === 4) {
+                    document.getElementById('g2-feedback').innerHTML = '<i class="fa-solid fa-star text-amber-400 mr-1"></i> Керемет! Барлық эмоционалдық күйлерге дұрыс психологиялық қолдау тәсілін таптыңыз!';
+                } else {
+                    document.getElementById('g2-feedback').textContent = 'Дұрыс сәйкестендірілді! Келесі эмоцияны таңдаңыз.';
+                }
+            } else {
+                document.getElementById('g2-feedback').textContent = 'Бұл тәсіл басқа күйге көбірек сәйкес келеді. Қайта байқап көріңіз!';
+            }
+        }
+
+        /* ==========================================================================
+           7. GAME 3: STROOP COGNITIVE FLEXIBILITY TEST
+           ========================================================================== */
+        const stroopColors = [
+            { key: 'red', label: 'ҚЫЗЫЛ', css: '#e11d48' },
+            { key: 'blue', label: 'КӨК', css: '#2563eb' },
+            { key: 'green', label: 'ЖАСЫЛ', css: '#059669' },
+            { key: 'amber', label: 'САРЫ', css: '#d97706' }
+        ];
+
+        let g3Step = 1;
+        let g3Score = 0;
+        let g3CurrentInk = 'blue';
+        let g3StartTime = Date.now();
+
+        function initStroopGame() {
+            g3Step = 1;
+            g3Score = 0;
+            g3StartTime = Date.now();
+            document.getElementById('g3-result').classList.add('hidden');
+            document.getElementById('g3-buttons').classList.remove('hidden');
+            nextStroopQuestion();
+        }
+
+        function nextStroopQuestion() {
+            document.getElementById('g3-step').textContent = `${g3Step} / 8`;
+            document.getElementById('g3-score').textContent = g3Score;
+            const wordObj = stroopColors[Math.floor(Math.random() * stroopColors.length)];
+            let inkObj = stroopColors[Math.floor(Math.random() * stroopColors.length)];
+            if (inkObj.key === wordObj.key) {
+                inkObj = stroopColors[(stroopColors.indexOf(inkObj) + 1) % stroopColors.length];
+            }
+            g3CurrentInk = inkObj.key;
+            const wordEl = document.getElementById('g3-word');
+            wordEl.textContent = wordObj.label;
+            wordEl.style.color = inkObj.css;
+        }
+
+        function answerStroop(chosenKey) {
+            if (chosenKey === g3CurrentInk) {
+                g3Score++;
+            }
+            if (g3Step < 8) {
+                g3Step++;
+                nextStroopQuestion();
+            } else {
+                const elapsed = ((Date.now() - g3StartTime) / 1000).toFixed(1);
+                document.getElementById('g3-score').textContent = g3Score;
+                document.getElementById('g3-buttons').classList.add('hidden');
+                const resEl = document.getElementById('g3-result');
+                resEl.classList.remove('hidden');
+                resEl.innerHTML = `
+                    <div class="text-lg font-extrabold text-amber-300">Нәтиже: 8 сұрақтан ${g3Score} дұрыс! (${elapsed} сек)</div>
+                    <p class="text-xs sm:text-sm text-slate-200">
+                        Струп әдістемесі мидың зейінді қайта бағыттау жылдамдығы мен когнитивті бақылау деңгейін көрсетеді. Сіздің зейін концентрацияңыз тамаша!
+                    </p>
+                    <button onclick="initStroopGame()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition">
+                        Қайта өту
+                    </button>
+                `;
+            }
+        }
+
+        /* ==========================================================================
+           INITIALIZE EVERYTHING ON LOAD
+           ========================================================================== */
+        window.onload = function () {
+            initThreeBackground();
+            renderAchievements('all');
+            initFragmentGame(false);
+            initEmotionGame();
+            initStroopGame();
+        };
+    </script>
+</body>
+</html>
